@@ -2,12 +2,15 @@ import Stock
 import csv
 
 class Portfolio:
-    def __int__(self, user):
+    def __init__(self, user):
         self.currentFunds = 0.0
         self.ownedStock = []
         self.netGain = 0.0
         self.netLoss = 0.0
-        self.user_name = str(user)
+        self.user_name = user
+
+    def getFunds(self):
+        return self.currentFunds
 
     def addFunds(self, addition):
         if(addition < 0):
