@@ -1,3 +1,4 @@
+
 """
 Bully Stock Market
 """
@@ -27,11 +28,8 @@ class Stock():
     def getName(self):
         return self.stock
         
-
-
-
-
-
+    def getValWhenBought(self):
+        return self.value
 
 
 def main():
