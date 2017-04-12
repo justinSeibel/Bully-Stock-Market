@@ -2,11 +2,12 @@ import Stock
 import csv
 
 class Portfolio:
-    def __int__(self):
+    def __int__(self, user):
         self.currentFunds = 0.0
         self.ownedStock = []
         self.netGain = 0.0
         self.netLoss = 0.0
+        self.user_name = str(user)
 
     def addFunds(self, addition):
         if(addition < 0):
@@ -36,7 +37,7 @@ class Portfolio:
             for i in range(stock_num):
                 self.ownedStock.append(stck)
             self.ownedStock.sort()
-            with open('Stock_List.csv', 'wb') as csvfile:
+            with open(self.user_name + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
@@ -65,10 +66,10 @@ class Portfolio:
                         self.ownedStock.remove(item)
                         break
             if(self.showNetGain() >= self.showNetLoss()):
-                print("Stock sold for a net gain of $", (self.netGain - self.NetLoss), ".")
+                print("Stock sold for a net gain of $", (self.netGain - self.netLoss), ".")
             else:
-                print("Stock sold for a net loss of $", (self.NetLoss - self.NetGain), ".")
-            with open('Stock_List.csv', 'wb') as csvfile:
+                print("Stock sold for a net loss of $", (self.netLoss - self.netGain), ".")
+            with open(self.user_name + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
@@ -96,7 +97,7 @@ class Portfolio:
         return self.netLoss
 
     def ret_list(self):
-        with open('Stock_List.csv', 'rb') as csvfile:
+        with open(self.user_name + '.csv', 'rb') as csvfile:
             s_list = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in s_list:
                 stck = Stock.Stock(s_list[0])
