@@ -1,4 +1,4 @@
-import Stock
+import Stock_RT
 import csv
 
 class Portfolio:
@@ -18,6 +18,9 @@ class Portfolio:
             return False
         else:
             self.currentFunds += addition
+            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+                fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                fund.writerow([self.currentFunds])
             print("Funds added.")
             return True
 
@@ -27,23 +30,31 @@ class Portfolio:
             return False
         else:
             self.currentFunds -= subtraction
+            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+                fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                fund.writerow([self.currentFunds])
             print("Funds removed.")
             return True
 
-    def buyStock(self, stock, stock_num):
-        stck = Stock.Stock(stock)
-        if((stck.getValWhenBought() * stock_num) > self.currentFunds):
+    def buyStock(self, stock, stock_num = 1):
+        stck = Stock_RT.Stock(stock)
+        print(stck.getValWhenBought())
+        print(self.getFunds())
+        print(float(stck.getValWhenBought()) * float(stock_num))
+        if (float(stck.getValWhenBought()) * float(stock_num)) > self.getFunds():
             print("Unable to purchase stocks.  Insufficient funds.")
             return False
         else:
-            self.currentFunds = self.currentFunds - (stck.getValWhenBought() * stock_num)
+            self.currentFunds = self.currentFunds - (float(stck.getValWhenBought()) * float(stock_num))
             for i in range(stock_num):
                 self.ownedStock.append(stck)
-            self.ownedStock.sort()
             with open(self.user_name + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
+            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+                fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                fund.writerow([self.currentFunds])
             print("Stock purchased.")
             return True
 
@@ -61,28 +72,31 @@ class Portfolio:
             for i in range(stock_num):
                 for item in self.ownedStock:
                     if(item.getName() == stock):
-                        if item.getCurrVal() > item.getValWhenBought():
-                            self.netGain = self.netGain + (item.getCurrVal() - item.getValWhenBought())
+                        if float(item.getCurrVal()) > float(item.getValWhenBought()):
+                            self.netGain = self.netGain + (float(item.getCurrVal()) - float(item.getValWhenBought()))
                         else:
-                            self.netLoss = self.netLoss + (item.getValWhenBought() - item.getCurrVal())
-                        self.currentFunds = self.currentFunds + item.getCurrVal()
+                            self.netLoss = self.netLoss + (float(item.getValWhenBought()) - float(item.getCurrVal()))
+                        self.currentFunds = self.currentFunds + float(item.getCurrVal())
                         self.ownedStock.remove(item)
                         break
             if(self.showNetGain() >= self.showNetLoss()):
-                print("Stock sold for a net gain of $", (self.netGain - self.netLoss), ".")
+                print("Stock sold for a net gain of $" + str(float(self.netGain - self.netLoss)) + ".")
             else:
-                print("Stock sold for a net loss of $", (self.netLoss - self.netGain), ".")
+                print("Stock sold for a net loss of $" + str(float(self.netLoss - self.netGain)) + ".")
             with open(self.user_name + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
+            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+                fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+                fund.writerow([self.currentFunds])
             return True
 
     def showOwnedStock(self):
         ret_list = []
         for item in self.ownedStock:
-            ret_list.append(item.getName())
-            ret_list.append(item.getValWhenBought())
+            ret_list.append(str(item.getName()))
+            ret_list.append(str(item.getValWhenBought()))
         return ret_list
 
     def showNetGain(self):
@@ -99,11 +113,15 @@ class Portfolio:
                 self.netGain = self.netLoss + (stock.getCurrVal() - stock.getValWhenBought())
         return self.netLoss
 
-    def ret_list(self):
+    def ret_data(self):
         with open(self.user_name + '.csv', 'rb') as csvfile:
             s_list = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in s_list:
-                stck = Stock.Stock(s_list[0])
-                stck.setValWhenBought(int(s_list[1]))
+                stck = Stock_RT.Stock(row[0])
+                stck.setValWhenBought(float(row[1]))
                 self.ownedStock.append(stck)
+        with open(self.user_name + '_$.csv', 'rb') as csvfile:
+            fund = csv.reader(csvfile, delimiter=' ', quotechar='|')
+            for row in fund:
+                self.currentFunds = float(row[0])
         return
