@@ -8,6 +8,8 @@ import csv
 import Portfolio
 import Alerts
 import Stock
+from company import *
+from userClass import *
 
 #ref: http://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
 class MainWin(tk.Tk):
@@ -15,7 +17,7 @@ class MainWin(tk.Tk):
 	def __init__(self):
 		tk.Tk.__init__(self)
 		
-		self.username = "\0"
+		self.user = User()
 		self.alerts = Alerts()
 		self.portfolio = Portfolio()
 		
@@ -38,20 +40,22 @@ class MainWin(tk.Tk):
 		frame = self.frames[pageName]
 		frame.tkraise()
 		
-	def storeData(self, username, alerts, portfolio):
-		self.username = username
+	def storeData(self, username, password, alerts, portfolio):
+		self.user = User(username, password)
 		self.alerts = alerts
-		self.portfolio = portfolio
+		self.portfolio = self.user.getPortfolio()
 	
-	def getUsername(self):
-		return self.username
-	def setUsername(self, username):
-		self.username = username
+	def getUser(self):
+		return self.user
+	def setUser(self, username, password):
+		del self.user
+		self.user = User(username, password)
 		
 	def getPortfolio(self):
 		return self.portfolio
 	def setPortfolio(self, portfolio):
-		self.portfolio = portfolio
+		del self.portfolio
+		self.portfolio = self.user.getPortfolio()
 	
 	def getAlerts(self):
 		return self.alerts
@@ -130,6 +134,7 @@ class LoginWin(tk.Frame):
 		else:
 			#placeholder
 			print "Login successful"
+			self.controller.setUser(self.username, self.password)
 			self.controller.showFrame("PortfolioWin")
 	
 	
@@ -152,6 +157,7 @@ class LoginWin(tk.Frame):
 			#need to write user data to csv file
 			users.write(self.username, self.password)
 			print "Account created successfully"
+			self.controller.setUser = User(self.username, self.password)
 			self.controller.showFrame("PortfolioWin")
 
 
@@ -293,6 +299,20 @@ class StockWin(tk.Frame):
 		self.controller.showFrame("PortfolioWin")
 	
 
+
+'''
+Company detail page
+links to: ?
+'''
+class CompanyDetail(tk.Frame):
+	
+	def __init__(self, parent, controller, compTicker):
+		tk.Frame.__init__(self, parent)
+		self.controller = controller
+		
+		stock = Stock(compTicker)
+		#self.company = Company()
+		
 
 def main():
 	mainWin = MainWin()
