@@ -18,14 +18,14 @@ class User:
     def setUserList(self):
         userid=self.getUserID()
         password=self.getPassword()
-        with open('user_portfolio.csv', 'ab') as csvfile:
+        with open('users.csv', 'ab') as csvfile:
             s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
             s_list.writerow([userid, password])
         return True
 
     def getUserList(self):
         info=[]
-        with open('user_portfolio.csv') as csvfile:
+        with open('users.csv') as csvfile:
             fieldnames=['ID']
             reader = csv.DictReader(csvfile, fieldnames=fieldnames)
             for row in reader:
