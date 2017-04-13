@@ -45,7 +45,7 @@ class Stock():
     def getCurrVal(self):
         return self.value
 
-    def getName(self):
+    def getName(self): #currently working on this method
         return self.stock
 
     def getValWhenBought(self):
