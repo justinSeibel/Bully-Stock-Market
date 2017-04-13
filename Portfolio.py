@@ -99,6 +99,15 @@ class Portfolio:
             ret_list.append(str(item.getValWhenBought()))
         return ret_list
 
+    def showAmtStock(self):
+        ret_dic = {}
+        for item in self.ownedStock:
+            if item.getName() not in ret_dic:
+                ret_dic[item.getName()] = 1
+            else:
+                ret_dic[item.getName()] += 1
+        return ret_dic
+
     def showNetGain(self):
         self.netGain = 0
         for stock in self.ownedStock:
