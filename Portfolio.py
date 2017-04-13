@@ -2,6 +2,8 @@ import Stock_RT
 import csv
 
 class Portfolio:
+    # This function will set up the basis of a Portfolio.
+    # Only requirement is a passed in string for the desired username.
     def __init__(self, user):
         self.currentFunds = 0.0
         self.ownedStock = []
@@ -9,9 +11,14 @@ class Portfolio:
         self.netLoss = 0.0
         self.user_name = user
 
+    # This function will return a value for the current funds a portfolio has.
+    # It would be recommended to change the value to a float when it is received.
     def getFunds(self):
         return self.currentFunds
 
+    # This function will add any desired funds to the current amount.
+    # Only requirement is a passed in integer or float for the desired amount.
+    # I have not tested yet to see if a passed in float or integer will make a difference.
     def addFunds(self, addition):
         if(addition < 0):
             print("Unable to add given amount.")
@@ -24,6 +31,9 @@ class Portfolio:
             print("Funds added.")
             return True
 
+    # This function will subtract any desired funds to the current amount.
+    # Only requirement is a passed in integer or float for the desired amount.
+    # I have not tested yet to see if a passed in float or integer will make a difference.
     def removeFunds(self, subtraction):
         if(subtraction < 0 or subtraction > self.currentFunds):
             print("Unable to remove given amount.")
@@ -36,6 +46,9 @@ class Portfolio:
             print("Funds removed.")
             return True
 
+    # This function will take a stock symbol and the designated number wanted to add.
+    # Within a single instance, all the stock info will be placed in a list.
+    # The ret_data method will allow the retrieval of previously created csv files.
     def buyStock(self, stock, stock_num = 1):
         stck = Stock_RT.Stock(stock)
         print(stck.getValWhenBought())
@@ -58,6 +71,9 @@ class Portfolio:
             print("Stock purchased.")
             return True
 
+    # This function will take a stock symbol and the designated number wanted to remove.
+    # This function checks the instance's list and removes the first instance of the desired stock it sees.
+    # The ret_data method will allow the retrieval of previously created csv files.
     def sellStock(self, stock, stock_num):
         num = 0
         for item in self.ownedStock:
@@ -92,6 +108,7 @@ class Portfolio:
                 fund.writerow([self.currentFunds])
             return True
 
+    # Returns a list of the stock symbols and their values from the current list of the instance.
     def showOwnedStock(self):
         ret_list = []
         for item in self.ownedStock:
@@ -99,6 +116,8 @@ class Portfolio:
             ret_list.append(str(item.getValWhenBought()))
         return ret_list
 
+    # Returns a dictionary of the stock symbols and the amount of how many there are.
+    # Key:Value pair is {Stock Symbol:Amount}.
     def showAmtStock(self):
         ret_dic = {}
         for item in self.ownedStock:
@@ -108,6 +127,7 @@ class Portfolio:
                 ret_dic[item.getName()] += 1
         return ret_dic
 
+    # Returns a value of the determined net gain across the current list of stocks and their values.
     def showNetGain(self):
         self.netGain = 0
         for stock in self.ownedStock:
@@ -115,6 +135,7 @@ class Portfolio:
                 self.netGain = self.netGain + (stock.getValWhenBought() - stock.getCurrVal())
         return self.netGain
 
+    # Returns a value of the determined net loss across the current list of stocks and their values.
     def showNetLoss(self):
         self.netLoss = 0
         for stock in self.ownedStock:
@@ -122,6 +143,9 @@ class Portfolio:
                 self.netGain = self.netLoss + (stock.getCurrVal() - stock.getValWhenBought())
         return self.netLoss
 
+    # This method searches the desired instance's past information through previously created csv files.
+    # Adjusts the self.ownedStock and self.currentFunds attributes.
+    # Csv files used are (passed in username).csv and (passed in username)_$.csv
     def ret_data(self):
         with open(self.user_name + '.csv', 'rb') as csvfile:
             s_list = csv.reader(csvfile, delimiter=' ', quotechar='|')
