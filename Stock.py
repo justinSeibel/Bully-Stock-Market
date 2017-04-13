@@ -78,7 +78,7 @@ class Stock():
 
 
 
-
+#Used this to test the mehods in the class 
 def main():
     stock = Stock('intel') #you can just change the name to search for whatever stock
     stock.search_stock()
@@ -86,5 +86,5 @@ def main():
     print 'The symbol of the stock you are searching is: ', stock.get_symbol()
     print 'The current value of this stock is: ', stock.getCurrVal()
     print
-    stock.getName()
+    #stock.getName() currently working on this method 
 main()
