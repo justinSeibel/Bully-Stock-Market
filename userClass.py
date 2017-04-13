@@ -1,9 +1,11 @@
 import csv
+from Portfolio import *
 
 class User:
     def __init__(self, userID=" ", password=" "):
         self.ID = userID
         self.password = password
+        self.portfolio = Portfolio(ID)
 
     def setUserID(self, newID):
         self.ID=newID
