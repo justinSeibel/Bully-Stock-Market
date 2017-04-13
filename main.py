@@ -26,7 +26,7 @@ class MainWin(tk.Tk):
 		container.grid_columnconfigure(0, weight=1)
 		
 		self.frames = {}
-		for F in (LoginWin, PortfolioWin, FundTransWin):
+		for F in (LoginWin, PortfolioWin, FundTransWin, StockWin):
 			pageName = F.__name__
 			frame = F(parent=container, controller=self)
 			self.frames[pageName] = frame
