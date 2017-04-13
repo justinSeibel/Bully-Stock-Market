@@ -36,6 +36,9 @@ def main():
     while num < len(li):
         print(li[num] + " " + li[num + 1])
         num += 2
+
+    di = example.showAmtStock()
+    print(di)
     return
 
 main()
