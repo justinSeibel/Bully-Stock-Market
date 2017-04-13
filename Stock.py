@@ -1,4 +1,4 @@
-"""
+ """
 Bully Stock Market
 """
 
@@ -48,7 +48,9 @@ class Stock():
         return self.value
 
     '''
-    def getName(self):
+    Currently working on this method
+    
+    def getName(self): 
         url = urllib2.urlopen(
             'http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=' + self.stock + '&region=1&lang=en&callback=YAHOO.Finance.SymbolSuggest.ssCallback')
         the_page = url.read()
