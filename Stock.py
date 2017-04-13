@@ -16,7 +16,6 @@ class Stock():
     def search_stock(self):
         url = urllib2.urlopen('http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=' + self.stock +'&region=1&lang=en&callback=YAHOO.Finance.SymbolSuggest.ssCallback')
         the_page = url.read()
-        #the_page = the_page.split()
         length = len(the_page)
 
         for each in range(0, length):
