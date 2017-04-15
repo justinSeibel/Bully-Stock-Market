@@ -1,17 +1,34 @@
-import Stock
+from Stock import *
+from yahoo_finance import *
 
 class Company:
     def __init__(self, data, funds):
         # Initializer function. Takes in "data" (a Stock object) for stockData, then uses the object to set companyName
         # and companyTag. Currently also takes in "funds" (float) for userFundsInvested (should this start as 0 or
-        # otherwise be pulled from the user in question?)
-        self.stockData = data
+        # otherwise be pulled from the user in question?) Also, does this need to be error-checked or do we assume the
+        # initializer will be correct?
 
-        self.companyName = self.stockData.getName()
+        # Error-checks for data being type Stock, will raise TypeError exception if not.
+        # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns TypeError
+        if type(data) == Stock:
+            self.stockData = data
+        else:
+            raise TypeError
+
+        # Currently pulling companyName from Stock's Yahoo API get_name() function. Once Stock class has its own getName
+        # function working, replace this call with that.
+        self.companyName = self.stockData.yahoo.get_name()
+        # self.companyName = self.stockData.getName()
         self.companyTag = self.stockData.get_symbol()
 
         # Todo: Figure out how userFundsInvested is actually collected
-        self.userFundsInvested = funds
+        # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns ValueError
+        if type(funds) != float or type(funds) != int:
+            raise TypeError
+        elif funds < 0:
+            raise ValueError
+        else:
+            self.userFundsInvested = funds
 
     def updateData(self):
         # I forget what this one's supposed to do
@@ -47,12 +64,49 @@ class Company:
 
     def setStock(self, data):
         # Setter to return stockData, returns True if successful
-        # Todo: Error checking to ensure invalid inputs are blocked and setter returns False instead
+        if type(data) != Stock:
+            # Error-checking for non-Stock "data" passed
+            return False
         self.stockData = data
         return True
 
     def setUFI(self, funds):
         # Setter to return UserFundsInvested, returns True if successful
-        # Todo: Error checking to ensure invalid inputs are blocked and setter returns False instead
-        self.userFundsInvested = funds
-        return True
+        try:
+            # Theoretically should trip TypeError if invalid variable type for "funds" passed
+            ifunds = float(funds)
+
+            if ifunds < 0:
+                # Error-checking for negative value for "funds" passed
+                return False
+
+            else:
+                self.userFundsInvested = ifunds
+                return True
+
+        except (TypeError,ValueError):
+            # Error-checking for non-float "funds" passed
+            return False
+
+        except:
+            # Broad error-checking to catch anything else (will still raise the error but will tell us that it's not
+            # one we're set up to catch
+            print "Unexpected error"
+            raise
+
+'''
+# Bare-bones main function to test company class
+def main():
+    test = Stock('nintendo')
+    test.search_stock()
+    testc = Company(test,-1)
+    print testc.getName()
+    print testc.getTag()
+    print testc.getUFI()
+    print
+    tbool = testc.setUFI('dafsadfadf')
+    print tbool
+    print testc.getUFI()
+    input('done')
+main()
+'''
