@@ -1,4 +1,4 @@
- """
+"""
 Bully Stock Market
 """
 
@@ -7,7 +7,7 @@ from yahoo_finance import *
 import urllib
 import urllib2
 
-class Stock():
+class Stock:
 
     def __init__(self, stock):
         self.stock = str(stock)
@@ -78,7 +78,7 @@ class Stock():
 
 
 
-#Used this to test the mehods in the class 
+#Used this to test the methods in the class
 def main():
     stock = Stock('intel') #you can just change the name to search for whatever stock
     stock.search_stock()
