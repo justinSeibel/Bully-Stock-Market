@@ -5,9 +5,9 @@
 import yahoo_finance
 import Tkinter as tk
 import csv
-import Portfolio
-import Alerts
-import Stock
+from Portfolio import *
+from Alert_class import *
+from Stock import *
 from company import *
 from userClass import *
 
@@ -18,8 +18,8 @@ class MainWin(tk.Tk):
 		tk.Tk.__init__(self)
 		
 		self.user = User()
-		self.alerts = Alerts()
-		self.portfolio = Portfolio()
+		self.alerts = Alert()
+		self.portfolio = Portfolio(self.user)
 		
 		#pack initial container, then subsequent pages
 		container = tk.Frame(self)
@@ -43,7 +43,7 @@ class MainWin(tk.Tk):
 	def storeData(self, username, password, alerts, portfolio):
 		self.user = User(username, password)
 		self.alerts = alerts
-		self.portfolio = self.user.getPortfolio()
+		self.portfolio = portfolio
 	
 	def getUser(self):
 		return self.user
@@ -55,7 +55,7 @@ class MainWin(tk.Tk):
 		return self.portfolio
 	def setPortfolio(self, portfolio):
 		del self.portfolio
-		self.portfolio = self.user.getPortfolio()
+		self.portfolio = portfolio
 	
 	def getAlerts(self):
 		return self.alerts
