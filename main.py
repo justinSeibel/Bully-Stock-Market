@@ -311,7 +311,52 @@ class CompanyDetail(tk.Frame):
 		self.controller = controller
 		
 		stock = Stock(compTicker)
-		#self.company = Company()
+		self.company = Company(stock, self.controller.portfolio.currentFunds)
+		
+		self.companyLabel = tk.Label(self, text=self.company.getName())
+		self.companyLabel.grid(row=0, column=0)
+		
+		self.worthLabel = tk.Label(self, text=self.company.getCurrValue())
+		self.worthLabel.grid(row=0, column=1)
+		
+		self.ownStockLabel = tk.Label(self, text="You own stock in this company!")
+		
+		self.optionDefault = "Daily"
+		self.optionHighLow = tk.OptionMenu(self, self.optionDefault, "Daily", "Yearly")
+		self.optionHighLow.grid(row=1, column=1)
+		
+		self.highLowButton = tk.Button(self, text="Change Highs/Lows", function=self.changeHighLow())
+		self.highLowButton.grid(row=1, column=2)
+		
+		self.highLabel = tk.Label(self, text=self.optionHighLow.get()+" High: ")
+		self.highLabel.grid(row=2, column=0)
+		
+		self.lowLabel = tk.Label(self, text=self.optionHighLow.get() + " Low: ")
+		self.lowLabel.grid(row=3, column=0)
+		
+		if self.optionHighLow.get() == "Daily":
+			self.highPerc = tk.Label(self, text=self.company.dailyHigh())
+			self.lowPerc = tk.Label(self, text=self.company.dailyLow())
+		elif self.optionHighLow.get() == "Yearly":
+			self.highPerc = tk.Label(self, text=self.company.YearlyHigh())
+			self.lowPerc = tk.Label(self, text=self.company.YearlyLow())
+		
+		self.highPerc.grid(row=2, column=1)
+		self.lowPerc.grid(row=3, column=1)
+		
+		
+	def changeHighLow(self):
+		#basically reload page, I suppose
+		if self.optionHighLow.get() == "Daily":
+			self.highPerc = tk.Label(self, self.company.dailyHigh())
+			self.lowPerc = tk.Label(self, self.company.dailyLow())
+		else:
+			self.highPerc = tk.Label(self, self.company.YearlyHigh())
+			self.lowPerc = tk.Label(self, self.company.YearlyLow())
+		#sorta doubt this will work
+		self.highPerc.grid(row=2, column=1)
+		self.lowPerc.grid(row=3, column=1)
+		
 		
 
 def main():
