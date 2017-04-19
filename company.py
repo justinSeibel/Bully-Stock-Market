@@ -10,10 +10,8 @@ class Company:
 
         # Error-checks for data being type Stock, will raise TypeError exception if not.
         # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns TypeError
-        if type(data) == Stock:
-            self.stockData = data
-        else:
-            raise TypeError
+        # Todo: Fix error-checking for data's type ( type(data) returns 'instance', not 'Stock')
+        self.stockData = data
 
         # Currently pulling companyName from Stock's Yahoo API get_name() function. Once Stock class has its own getName
         # function working, replace this call with that.
@@ -23,7 +21,7 @@ class Company:
 
         # Todo: Figure out how userFundsInvested is actually collected
         # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns ValueError
-        if type(funds) != float or type(funds) != int:
+        if type(funds) != float and type(funds) != int:
             raise TypeError
         elif funds < 0:
             raise ValueError
@@ -64,9 +62,12 @@ class Company:
 
     def setStock(self, data):
         # Setter to return stockData, returns True if successful
+        # Todo: Redo error-checking for type of data ( type(data) returns 'instance', not 'Stock')
+        '''
         if type(data) != Stock:
-            # Error-checking for non-Stock "data" passed
-            return False
+        # Error-checking for non-Stock "data" passed
+        return False
+        '''
         self.stockData = data
         return True
 
@@ -94,19 +95,41 @@ class Company:
             print "Unexpected error"
             raise
 
-'''
+
 # Bare-bones main function to test company class
 def main():
-    test = Stock('nintendo')
+    test = Stock('sony')
     test.search_stock()
-    testc = Company(test,-1)
+    print type(test)
+    testc = Company(test,0)
     print testc.getName()
     print testc.getTag()
+    print testc.getStock()
     print testc.getUFI()
     print
     tbool = testc.setUFI('dafsadfadf')
     print tbool
     print testc.getUFI()
-    input('done')
+    tbool = testc.setUFI(-42)
+    print tbool
+    print testc.getUFI()
+    print 'done with bad example'
+    print
+    print
+    test = Stock('microsoft')
+    test.search_stock()
+    testc = Company(test,250)
+    print testc.getName()
+    print testc.getTag()
+    print testc.getStock()
+    print testc.getUFI()
+    print
+    tbool = testc.setUFI(500)
+    print tbool
+    print testc.getUFI()
+    test = Stock('nintendo')
+    tbool = testc.setStock(test)
+    print tbool
+    print testc.getStock()
+    input('done with good example')
 main()
-'''
