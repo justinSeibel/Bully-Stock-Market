@@ -131,5 +131,4 @@ def main():
     print tbool
     print testc.getStock()
     input('done with good example')
-main()
-'''
+
