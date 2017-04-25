@@ -100,7 +100,6 @@ class Company:
 def main():
     test = Stock('sony')
     test.search_stock()
-    print type(test)
     testc = Company(test,0)
     print testc.getName()
     print testc.getTag()
