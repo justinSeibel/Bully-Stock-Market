@@ -5,17 +5,14 @@
 import yahoo_finance
 import Tkinter as tk
 import csv
-<<<<<<< HEAD
 import Portfolio
 import Alert_class
 import Stock
-=======
 from Portfolio import *
 from Alert_class import *
 from Stock import *
 from company import *
 from userClass import *
->>>>>>> refs/remotes/origin/Evan's-Branch
 
 #ref: http://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
 class MainWin(tk.Tk):
@@ -23,17 +20,18 @@ class MainWin(tk.Tk):
 	def __init__(self):
 		tk.Tk.__init__(self)
 		
-<<<<<<< HEAD
-		self.username = "\0"
-		self.alerts = Alert_class()
-		self.portfolio = Portfolio()
-=======
-		self.user = User()
-		self.alerts = Alert()
-		self.portfolio = Portfolio(self.user)
->>>>>>> refs/remotes/origin/Evan's-Branch
+		"""
+		<<<<<<< HEAD
+				self.username = "\0"
+				self.alerts = Alert_class()
+				self.portfolio = Portfolio()
 		
-		#pack initial container, then subsequent pages
+				self.user = User()
+				self.alerts = Alert()
+				self.portfolio = Portfolio(self.user)
+		>>>>>>> refs/remotes/origin/Evan's-Branch
+		"""
+		# pack initial container, then subsequent pages
 		container = tk.Frame(self)
 		container.pack(side="top", fill="both", expand=True)
 		container.grid_rowconfigure(0, weight=1)

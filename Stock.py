@@ -102,4 +102,4 @@ def main():
     print
 
     print 'The name of this stock is: ', stock.getName()
-main()
+#main()
