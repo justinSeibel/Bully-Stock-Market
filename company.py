@@ -75,7 +75,8 @@ class Company:
         self.stockData = data
         return True
 
-    def setUFI(self, funds):
+    def setUFI(self, folio):
+        '''
         # Setter to return UserFundsInvested, returns True if successful
         try:
             # Theoretically should trip TypeError if invalid variable type for "funds" passed
@@ -98,6 +99,19 @@ class Company:
             # one we're set up to catch
             print "Unexpected error"
             raise
+        '''
+        userStock = folio.showOwnedStock()
+        userVal = 0.0
+        for i in range(0, len(userStock), 2):
+            if userStock[i] == self.companyTag:
+                userVal = float(userStock[i + 1])
+                break
+        if userVal != 0.0:
+            userNum = folio.showAmtStock()
+            numStock = userNum[self.companyTag]
+            self.userFundsInvested = userVal * numStock
+        else:
+            self.userFundsInvested = 0.0
 
 
 # Bare-bones main function to test company class
