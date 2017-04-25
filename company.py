@@ -1,12 +1,12 @@
 from Stock import *
+from Portfolio import *
 from yahoo_finance import *
 
 class Company:
-    def __init__(self, data, funds):
+    def __init__(self, data, folio):
         # Initializer function. Takes in "data" (a Stock object) for stockData, then uses the object to set companyName
-        # and companyTag. Currently also takes in "funds" (float) for userFundsInvested (should this start as 0 or
-        # otherwise be pulled from the user in question?) Also, does this need to be error-checked or do we assume the
-        # initializer will be correct?
+        # and companyTag. Takes in "folio" (the User's Portfolio) to calculate userFundsInvested. Also, does this
+        # need to be error-checked or do we assume the initializer will be correct?
 
         # Error-checks for data being type Stock, will raise TypeError exception if not.
         # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns TypeError
@@ -19,14 +19,18 @@ class Company:
         # self.companyName = self.stockData.getName()
         self.companyTag = self.stockData.get_symbol()
 
-        # Todo: Figure out how userFundsInvested is actually collected
-        # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns ValueError
-        if type(funds) != float and type(funds) != int:
-            raise TypeError
-        elif funds < 0:
-            raise ValueError
+        userStock = folio.showOwnedStock()
+        userVal = 0.0
+        for i in range(0,len(userStock),2):
+            if userStock[i] == self.companyTag:
+                userVal = float(userStock[i+1])
+                break
+        if userVal != 0.0:
+            userNum = folio.showAmtStock()
+            numStock = userNum[self.companyTag]
+            self.userFundsInvested = userVal * numStock
         else:
-            self.userFundsInvested = funds
+            self.userFundsInvested = 0.0
 
     def updateData(self):
         # I forget what this one's supposed to do
