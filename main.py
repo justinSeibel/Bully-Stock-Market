@@ -6,7 +6,7 @@ import yahoo_finance
 import Tkinter as tk
 import csv
 import Portfolio
-import Alerts
+import Alert_class
 import Stock
 
 #ref: http://stackoverflow.com/questions/7546050/switch-between-two-frames-in-tkinter
@@ -16,7 +16,7 @@ class MainWin(tk.Tk):
 		tk.Tk.__init__(self)
 		
 		self.username = "\0"
-		self.alerts = Alerts()
+		self.alerts = Alert_class()
 		self.portfolio = Portfolio()
 		
 		#pack initial container, then subsequent pages
@@ -115,7 +115,7 @@ class LoginWin(tk.Frame):
 			correctLogin = False
 		else:
 			for row in users:
-				if (row[0] == self.username):
+				if row[0] == self.username:
 					isUser = True
 					userRow = row
 					break
@@ -142,7 +142,7 @@ class LoginWin(tk.Frame):
 			users.write("Username, Password")
 		else:
 			for row in users:
-				if (row[0] == self.username):
+				if row[0] == self.username:
 					userAvail = False
 		if ~userAvail:
 			#placeholder

@@ -20,7 +20,7 @@ class Portfolio:
     # Only requirement is a passed in integer or float for the desired amount.
     # I have not tested yet to see if a passed in float or integer will make a difference.
     def addFunds(self, addition):
-        if(addition < 0):
+        if addition < 0:
             print("Unable to add given amount.")
             return False
         else:
@@ -35,7 +35,7 @@ class Portfolio:
     # Only requirement is a passed in integer or float for the desired amount.
     # I have not tested yet to see if a passed in float or integer will make a difference.
     def removeFunds(self, subtraction):
-        if(subtraction < 0 or subtraction > self.currentFunds):
+        if subtraction < 0 or subtraction > self.currentFunds:
             print("Unable to remove given amount.")
             return False
         else:
@@ -79,7 +79,7 @@ class Portfolio:
         for item in self.ownedStock:
             if item.getName() == stock:
                 num += 1
-        if(stock_num > num):
+        if stock_num > num:
             print("Unable to sell stock.  Insufficient number of stock.")
             return False
         else:
@@ -87,7 +87,7 @@ class Portfolio:
             self.netLoss = 0
             for i in range(stock_num):
                 for item in self.ownedStock:
-                    if(item.getName() == stock):
+                    if item.getName() == stock:
                         if float(item.getCurrVal()) > float(item.getValWhenBought()):
                             self.netGain = self.netGain + (float(item.getCurrVal()) - float(item.getValWhenBought()))
                         else:
@@ -95,7 +95,7 @@ class Portfolio:
                         self.currentFunds = self.currentFunds + float(item.getCurrVal())
                         self.ownedStock.remove(item)
                         break
-            if(self.showNetGain() >= self.showNetLoss()):
+            if self.showNetGain() >= self.showNetLoss():
                 print("Stock sold for a net gain of $" + str(float(self.netGain - self.netLoss)) + ".")
             else:
                 print("Stock sold for a net loss of $" + str(float(self.netLoss - self.netGain)) + ".")
@@ -131,7 +131,7 @@ class Portfolio:
     def showNetGain(self):
         self.netGain = 0
         for stock in self.ownedStock:
-            if(stock.getValWhenBought() > stock.getCurrVal()):
+            if stock.getValWhenBought() > stock.getCurrVal():
                 self.netGain = self.netGain + (stock.getValWhenBought() - stock.getCurrVal())
         return self.netGain
 
@@ -139,7 +139,7 @@ class Portfolio:
     def showNetLoss(self):
         self.netLoss = 0
         for stock in self.ownedStock:
-            if (stock.getValWhenBought() < stock.getCurrVal()):
+            if stock.getValWhenBought() < stock.getCurrVal():
                 self.netGain = self.netLoss + (stock.getCurrVal() - stock.getValWhenBought())
         return self.netLoss
 
