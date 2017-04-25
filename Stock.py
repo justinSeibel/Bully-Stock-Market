@@ -80,7 +80,18 @@ class Stock:
         return self.value
 
 
+
+
+
+
+
+
+
+#Used this to test the methods in the class
+
+
 '''main is for testing purposes'''
+
 def main():
     name = input(str("Type in the name of the stock you would like to search for: "))#You have to put it in quotes
     stock = Stock(name)
