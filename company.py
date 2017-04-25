@@ -5,18 +5,11 @@ from yahoo_finance import *
 class Company:
     def __init__(self, data, folio):
         # Initializer function. Takes in "data" (a Stock object) for stockData, then uses the object to set companyName
-        # and companyTag. Takes in "folio" (the User's Portfolio) to calculate userFundsInvested. Also, does this
-        # need to be error-checked or do we assume the initializer will be correct?
+        # and companyTag. Takes in "folio" (the User's Portfolio) to calculate userFundsInvested.
 
-        # Error-checks for data being type Stock, will raise TypeError exception if not.
-        # Todo: Whatever code creates Company objects will need to have exception handling for if the initializer returns TypeError
-        # Todo: Fix error-checking for data's type ( type(data) returns 'instance', not 'Stock')
         self.stockData = data
 
-        # Currently pulling companyName from Stock's Yahoo API get_name() function. Once Stock class has its own getName
-        # function working, replace this call with that.
-        self.companyName = self.stockData.yahoo.get_name()
-        # self.companyName = self.stockData.getName()
+        self.companyName = self.stockData.getName()
         self.companyTag = self.stockData.get_symbol()
 
         userStock = folio.showOwnedStock()
@@ -31,10 +24,6 @@ class Company:
             self.userFundsInvested = userVal * numStock
         else:
             self.userFundsInvested = 0.0
-
-    def updateData(self):
-        # I forget what this one's supposed to do
-        pass
 
     def getName(self):
         # Getter to return companyName
@@ -54,24 +43,16 @@ class Company:
 
     def setName(self, name):
         # Setter to set companyName, returns True if successful
-        # Todo: Error checking to ensure invalid inputs are blocked and setter returns False instead
         self.companyName = name
         return True
 
     def setTag(self, tag):
         # Setter to return companyTag, returns True if successful
-        # Todo: Error checking to ensure invalid inputs are blocked and setter returns False instead
         self.companyTag = tag
         return True
 
     def setStock(self, data):
         # Setter to return stockData, returns True if successful
-        # Todo: Redo error-checking for type of data ( type(data) returns 'instance', not 'Stock')
-        '''
-        if type(data) != Stock:
-        # Error-checking for non-Stock "data" passed
-        return False
-        '''
         self.stockData = data
         return True
 
@@ -115,6 +96,7 @@ class Company:
 
 
 # Bare-bones main function to test company class
+'''
 def main():
     test = Stock('sony')
     test.search_stock()
@@ -149,4 +131,4 @@ def main():
     print tbool
     print testc.getStock()
     input('done with good example')
-#main()
+
