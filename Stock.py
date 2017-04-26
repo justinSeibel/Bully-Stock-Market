@@ -5,12 +5,14 @@ Bully Stock Market
 
 from yahoo_finance import *
 import urllib2
+import webbrowser
 
 
 class Stock:
 
     def __init__(self, stock):
         self.stock = str(stock)
+        self.search_stock()
         incorrect = True
         while incorrect:
             try:
@@ -20,7 +22,7 @@ class Stock:
 
             except Exception:
                 print "Invalid stock name."
-                self.stock = input("Please enter a valid stock name: ")
+                self.stock = raw_input("Please enter a valid stock name: ")
 
             else:
                 incorrect = False
@@ -79,7 +81,10 @@ class Stock:
     def getValWhenBought(self):
         return self.value
 
-
+    def get_top30(self):
+        new = 2
+        url = "https://finance.yahoo.com/quote/%5EDJI/components?p=%SEDJI"
+        webbrowser.open(url, new=new)
 
 
 

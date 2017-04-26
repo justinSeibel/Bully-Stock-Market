@@ -10,6 +10,14 @@ class Portfolio:
         self.netGain = 0.0
         self.netLoss = 0.0
         self.user_name = user
+        try:
+            open(self.user_name.getUserID() + '.csv', 'rb')
+        except:
+            open(self.user_name.getUserID() + '.csv', 'wb')
+        try:
+            open(self.user_name.getUserID() + '_$.csv', 'rb')
+        except:
+            open(self.user_name.getUserID() + '_$.csv', 'wb')
 
     # This function will return a value for the current funds a portfolio has.
     # It would be recommended to change the value to a float when it is received.
@@ -25,7 +33,7 @@ class Portfolio:
             return False
         else:
             self.currentFunds += addition
-            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '_$.csv', 'wb') as csvfile:
                 fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 fund.writerow([self.currentFunds])
             print("Funds added.")
@@ -40,7 +48,7 @@ class Portfolio:
             return False
         else:
             self.currentFunds -= subtraction
-            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '_$.csv', 'wb') as csvfile:
                 fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 fund.writerow([self.currentFunds])
             print("Funds removed.")
@@ -61,11 +69,11 @@ class Portfolio:
             self.currentFunds = self.currentFunds - (float(stck.getValWhenBought()) * float(stock_num))
             for i in range(stock_num):
                 self.ownedStock.append(stck)
-            with open(self.user_name + '.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
-            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '_$.csv', 'wb') as csvfile:
                 fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 fund.writerow([self.currentFunds])
             print("Stock purchased.")
@@ -99,11 +107,11 @@ class Portfolio:
                 print("Stock sold for a net gain of $" + str(float(self.netGain - self.netLoss)) + ".")
             else:
                 print("Stock sold for a net loss of $" + str(float(self.netLoss - self.netGain)) + ".")
-            with open(self.user_name + '.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '.csv', 'wb') as csvfile:
                 s_list = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 for item in self.ownedStock:
                     s_list.writerow([item.getName(), item.getValWhenBought()])
-            with open(self.user_name + '_$.csv', 'wb') as csvfile:
+            with open(self.user_name.getUserID() + '_$.csv', 'wb') as csvfile:
                 fund = csv.writer(csvfile, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
                 fund.writerow([self.currentFunds])
             return True
@@ -147,13 +155,13 @@ class Portfolio:
     # Adjusts the self.ownedStock and self.currentFunds attributes.
     # Csv files used are (passed in username).csv and (passed in username)_$.csv
     def ret_data(self):
-        with open(self.user_name + '.csv', 'rb') as csvfile:
+        with open(self.user_name.getUserID() + '.csv', 'rb') as csvfile:
             s_list = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in s_list:
                 stck = Stock_RT.Stock(row[0])
                 stck.setValWhenBought(float(row[1]))
                 self.ownedStock.append(stck)
-        with open(self.user_name + '_$.csv', 'rb') as csvfile:
+        with open(self.user_name.getUserID() + '_$.csv', 'rb') as csvfile:
             fund = csv.reader(csvfile, delimiter=' ', quotechar='|')
             for row in fund:
                 self.currentFunds = float(row[0])

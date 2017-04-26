@@ -5,13 +5,14 @@
 from Stock import*
 from threading import Timer
 import time
+"""
 def timeout():
     print("Timeout!: pull newest data to check thresholds")
     #code here to pull newest data to check with thresholds
 
 t = Timer(1 * 10, timeout)
 t.start()
-
+"""
 class Alert:
     
     #threshold: % value set by user.

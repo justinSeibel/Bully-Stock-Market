@@ -9,8 +9,8 @@ from userClass import *
 def login(username, password):
 	isUser = False
 	userRow = ['\0', '\0']
-	usersFile = open('users.csv', 'a+')
-	users = csv.reader(usersFile)
+	usersFile = open('users.csv', 'rb')
+	users = csv.reader(usersFile, delimiter=' ', quotechar='|')
 	if users == None:
 		correctLogin = False
 	else:
@@ -24,7 +24,7 @@ def login(username, password):
 		if isUser & (userRow[1] == password):
 			correctLogin = True
 	
-	if not correctLogin | (not isUser):
+	if (not correctLogin) | (not isUser):
 		print "Username or password incorrect"
 		return None
 	else:
@@ -53,10 +53,11 @@ def register(username, password):
 	else:
 		# need to write user data to csv file
 		usersFileRead.close()
-		usersFileWrite = open('users.csv', 'wb')
+		usersFileWrite = open('users.csv', 'a+')
 		userWrite = csv.writer(usersFileWrite, delimiter=' ', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 		userWrite.writerow([username, password])
 		print "Account created successfully"
+		usersFileWrite.close()
 		return User(username, password)
 
 
@@ -64,54 +65,86 @@ def register(username, password):
 def main():
 	print 'Welcome to Bully Stock Market!'
 	thisUser = None
-	
+	choice = '0'
 	while (thisUser == None):
 		choice = raw_input("1 - Login\t2 - Register")
-		username = raw_input("Enter username: ")
-		password = raw_input("Enter password: ")
 		if choice == '1':
+			username = raw_input("Enter username: ")
+			password = raw_input("Enter password: ")
 			thisUser = login(username, password)
+			#thisPortfolio = Portfolio(thisUser)
+			#thisPortfolio.ret_data()
 		elif choice == '2':
+			username = raw_input("Enter username: ")
+			password = raw_input("Enter password: ")
 			thisUser = register(username, password)
+			#thisPortfolio = Portfolio(thisUser)
 		else:
 			print "Enter value 1 or 2"
-	
+	if choice == '1':
+		thisPortfolio = Portfolio(thisUser)
+		thisPortfolio.ret_data()
+	elif choice == '2':
+		thisPortfolio = Portfolio(thisUser)
 	#generate portfolio info
-	thisPortfolio = Portfolio(thisUser)
-	thisPortfolio.ret_data()
+	#thisPortfolio = Portfolio(thisUser)
+	#thisPortfolio.ret_data()
 	
 	choice = '0'
 	#main loop
-	while (choice != '9'):
-		print "Current Funds: " + thisPortfolio.getFunds()
+	while (choice != '10'):
+		print "Current Funds: " + str(thisPortfolio.getFunds())
 		
 		print "Choose one of the following commands: "
 		print "1 - Add Funds\t2 - Remove Funds\t3 - See Stocks"
 		print "4 - Show Net Gain\t5 - Show Net Loss\t6 - Sell Stock"
-		print "7 - Search Stock\t8 - See Alerts\t9 - Quit"
+		print "7 - Search Stock\t8 - See Alerts\t9 - Show Top 30"
+		print "10 - Logout"
 		choice = raw_input()
 		
 		#"switch" statement
 		if choice == '1':
-			amount = raw_input("Enter amount to add to account: ")
-			thisPortfolio.addFunds(amount)
+			amount = input("Enter amount to add to account: ")
+			thisPortfolio.addFunds(float(amount))
 		elif choice == '2':
 			amount = input("Enter amount to remove from account: ")
-			thisPortfolio.removeFunds(amount)
+			thisPortfolio.removeFunds(float(amount))
 		elif choice == '3':
-			thisPortfolio.showOwnedStock()
+			stockList = thisPortfolio.showOwnedStock()
+			if stockList == None:
+				print "No stocks available"
+			else:
+				x = 0
+				for i in stockList:
+					if x%2 == 0:
+						print "Symbol: " + i
+					else:
+						print "Price: " + i
+					x += 1
 		elif choice == '4':
-			print "Stock Net Gain: " + thisPortfolio.showNetGain()
+			print "Stock Net Gain: " + str(thisPortfolio.showNetGain())
 		elif choice == '5':
-			print "Stock Net Loss: " + thisPortfolio.showNetLoss()
+			print "Stock Net Loss: " + str(thisPortfolio.showNetLoss())
 		elif choice == '6':
-			stock = input("Enter stock to sell: ")
+			stock = raw_input("Enter stock to sell: ")
 			amount = input("Enter amount of stock to sell: ")
 			thisPortfolio.sellStock(stock, amount)
 		elif choice == '7':
-			search = input("Enter search: ")
+			search = raw_input("Enter search: ")
 			stock = Stock(search)
 			stock.search_stock()
+			print "Company Name: " + stock.getName()
+			print "Company Ticker: " + stock.get_symbol()
+			print "Current Stock Value: " + stock.getCurrVal()
+			
+			print "Would you like to buy?"
+			print "1 - Yes\t2 - No"
+			yn = raw_input()
+			if yn == '1':
+				print "How much?"
+				stockAmount = input()
+				thisPortfolio.buyStock(stock.get_symbol(), stockAmount)
+			#stock.search_stock()
 			#display stock info
 		elif choice == '8':
 			print "Which type of Alert do you want to set?"
@@ -131,6 +164,8 @@ def main():
 			alert.getThreshold()
 			
 		elif choice == '9':
+			Stock("YHOO").get_top30()
+		elif choice == '10':
 			print "Logging out..."
 			break
 		else:
